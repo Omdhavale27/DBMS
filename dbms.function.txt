@@ -1,0 +1,267 @@
+Microsoft Windows [Version 10.0.19045.6159]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 9.4\bin>mysql -h localhost -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 9.4.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
++--------------------+
+6 rows in set (0.836 sec)
+
+mysql> demo;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'demo' at line 1
+mysql> use demo;
+Database changed
+mysql> SELECT ABS(-45); -- Result: 45
++----------+
+| ABS(-45) |
++----------+
+|       45 |
++----------+
+1 row in set (0.031 sec)
+
+mysql> SELECT CEIL(5.2), FLOOR(5.8);
++-----------+------------+
+| CEIL(5.2) | FLOOR(5.8) |
++-----------+------------+
+|         6 |          5 |
++-----------+------------+
+1 row in set (0.037 sec)
+
+mysql>  SELECT 10 DIV 3;
++----------+
+| 10 DIV 3 |
++----------+
+|        3 |
++----------+
+1 row in set (0.005 sec)
+
+mysql> SELECT 10 % 3
+    -> ;
++--------+
+| 10 % 3 |
++--------+
+|      1 |
++--------+
+1 row in set (0.005 sec)
+
+mysql> SELECT ROUND(123.4567, 2);
++--------------------+
+| ROUND(123.4567, 2) |
++--------------------+
+|             123.46 |
++--------------------+
+1 row in set (0.027 sec)
+
+mysql> SELECT TRUNCATE(123.4567, 2)
+    -> ;
++-----------------------+
+| TRUNCATE(123.4567, 2) |
++-----------------------+
+|                123.45 |
++-----------------------+
+1 row in set (0.006 sec)
+
+mysql> SELECT CONCAT('OM', '1801');
++----------------------+
+| CONCAT('OM', '1801') |
++----------------------+
+| OM1801               |
++----------------------+
+1 row in set (0.032 sec)
+
+mysql> SELECT REPEAT('OM', 2);
++-----------------+
+| REPEAT('OM', 2) |
++-----------------+
+| OMOM            |
++-----------------+
+1 row in set (0.005 sec)
+
+mysql> SELECT REVERSE('virat');
++------------------+
+| REVERSE('virat') |
++------------------+
+| tariv            |
++------------------+
+1 row in set (0.005 sec)
+mysql> SELECT INSTR('Virat', '3');
++---------------------+
+| INSTR('Virat', '3') |
++---------------------+
+|                   0 |
++---------------------+
+1 row in set (0.042 sec)
+
+mysql> SELECT ELT(4, 'red', 'blue', 'green', 'yellow');-- Returns: 'yellow'
++------------------------------------------+
+| ELT(4, 'red', 'blue', 'green', 'yellow') |
++------------------------------------------+
+| yellow                                   |
++------------------------------------------+
+1 row in set (0.038 sec)
+
+mysql> SELECT LPAD('Arwen', 10, '*');
++------------------------+
+| LPAD('Arwen', 10, '*') |
++------------------------+
+| *****Arwen             |
++------------------------+
+1 row in set (0.035 sec)
+
+mysql> SELECT RPAD('OM', 10, '*');
++---------------------+
+| RPAD('OM', 10, '*') |
++---------------------+
+| OM********          |
++---------------------+
+1 row in set (0.031 sec)
+
+mysql> SELECT INSERT('viratkohli', 4, 3, 'XYZ');
++-----------------------------------+
+| INSERT('viratkohli', 4, 3, 'XYZ') |
++-----------------------------------+
+| virXYZohli                        |
++-----------------------------------+
+1 row in set (0.034 sec)
+
+mysql> SELECT LEFT('virat', 3);
++------------------+
+| LEFT('virat', 3) |
++------------------+
+| vir              |
++------------------+
+1 row in set (0.005 sec)
+
+mysql> select power(2,3);
++------------+
+| power(2,3) |
++------------+
+|          8 |
++------------+
+1 row in set (0.030 sec)
+
+mysql> select sqrt(169);
++-----------+
+| sqrt(169) |
++-----------+
+|        13 |
++-----------+
+1 row in set (0.062 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'REATE TABLE emp (
+    ->     empid INT PRIMARY KEY,
+    ->     ename VARCHAR(50)' at line 1
+mysql> create table emp( empid INT PRIMARY KEY, ename VARCHAR(50),salary DECIMAL(10, 2),dept VARCHAR(50));
+Query OK, 0 rows affected (0.804 sec)
+
+mysql> desc emp;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| empid  | int           | NO   | PRI | NULL    |       |
+| ename  | varchar(50)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
+| dept   | varchar(50)   | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+4 rows in set (0.160 sec)
+
+mysql> INSERT INTO emp (empid, ename, salary, dept) VALUES    (1, 'Om', 50000.00, 'Sales'),    (2, 'Manoj', 60000.00, 'HR'),    (3, 'Karan', 55000.00, 'Sales'),    (4, 'Chaitanya', 70000.00, 'IT'),    (5, 'Karan', 45000.00, 'HR');
+Query OK, 5 rows affected (0.240 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select*from emp;
++-------+-----------+----------+-------+
+| empid | ename     | salary   | dept  |
++-------+-----------+----------+-------+
+|     1 | Om        | 50000.00 | Sales |
+|     2 | Manoj     | 60000.00 | HR    |
+|     3 | Karan     | 55000.00 | Sales |
+|     4 | Chaitanya | 70000.00 | IT    |
+|     5 | Karan     | 45000.00 | HR    |
++-------+-----------+----------+-------+
+5 rows in set (0.041 sec)
+
+mysql> SELECT COUNT(*) AS total_employees FROM emp;
++-----------------+
+| total_employees |
++-----------------+
+|               5 |
++-----------------+
+1 row in set (0.104 sec)
+
+mysql> SELECT SUM(salary) AS total_salary FROM emp;
++--------------+
+| total_salary |
++--------------+
+|    280000.00 |
++--------------+
+1 row in set (0.037 sec)
+
+mysql> SELECT AVG(salary) AS avg_salary FROM emp;
++--------------+
+| avg_salary   |
++--------------+
+| 56000.000000 |
++--------------+
+1 row in set (0.007 sec)
+
+mysql> SELECT MIN(salary) AS min_salary FROM emp;
++------------+
+| min_salary |
++------------+
+|   45000.00 |
++------------+
+1 row in set (0.036 sec)
+
+mysql> SELECT MAX(salary) AS max_salary FROM emp;
++------------+
+| max_salary |
++------------+
+|   70000.00 |
++------------+
+1 row in set (0.006 sec)
+
+mysql> SELECT dept, COUNT(*) AS emp_countFROM empGROUP BY dept;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'empGROUP BY dept' at line 1
+mysql> SELECT dept, COUNT(*) AS emp_count FROM emp GROUP BY dept;
++-------+-----------+
+| dept  | emp_count |
++-------+-----------+
+| Sales |         2 |
+| HR    |         2 |
+| IT    |         1 |
++-------+-----------+
+3 rows in set (0.011 sec)
+
+mysql> SELECT dept, AVG(salary) AS avg_salaryFROM empGROUP BY deptHAVING AVG(salary) > 50000.00;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'empGROUP BY deptHAVING AVG(salary) > 50000.00' at line 1
+mysql> SELECT dept, AVG(salary) AS avg_salary FROM emp GROUP BY dept HAVING AVG(salary) > 50000;
++-------+--------------+
+| dept  | avg_salary   |
++-------+--------------+
+| Sales | 52500.000000 |
+| HR    | 52500.000000 |
+| IT    | 70000.000000 |
++-------+--------------+
+3 rows in set (0.021 sec)
