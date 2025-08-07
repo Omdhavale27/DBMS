@@ -1,0 +1,183 @@
+Microsoft Windows [Version 10.0.19045.6159]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 9.4\bin>mysql -h localhost -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 9.4.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use demo;
+Database changed
+mysql> CREATE TABLE college (     roll_no INT PRIMARY KEY,name VARCHAR(100),course VARCHAR(100),class VARCHAR(10),fees DECIMAL(10,2));
+Query OK, 0 rows affected (0.449 sec)
+
+mysql> desc college;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| roll_no | int           | NO   | PRI | NULL    |       |
+| name    | varchar(100)  | YES  |     | NULL    |       |
+| course  | varchar(100)  | YES  |     | NULL    |       |
+| class   | varchar(10)   | YES  |     | NULL    |       |
+| fees    | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+5 rows in set (0.075 sec)
+
+mysql> INSERT INTO college VALUES (101, 'Om', 'AIDS', 'FY', 45000.00);INSERT INTO college VALUES (102, 'Manoj', 'mechanical', 'SY', 38000.00);INSERT INTO college VALUES (103, 'Karan', 'Computer eng', 'TY', 42000.00);INSERT INTO college VALUES (104, 'Chaitanya', 'BBA', 'FY', 47000.00);
+Query OK, 1 row affected (0.075 sec)
+
+Query OK, 1 row affected (0.032 sec)
+
+Query OK, 1 row affected (0.035 sec)
+
+Query OK, 1 row affected (0.039 sec)
+
+mysql> select*from college;
++---------+-----------+--------------+-------+----------+
+| roll_no | name      | course       | class | fees     |
++---------+-----------+--------------+-------+----------+
+|     101 | Om        | AIDS         | FY    | 45000.00 |
+|     102 | Manoj     | mechanical   | SY    | 38000.00 |
+|     103 | Karan     | Computer eng | TY    | 42000.00 |
+|     104 | Chaitanya | BBA          | FY    | 47000.00 |
++---------+-----------+--------------+-------+----------+
+4 rows in set (0.007 sec)
+
+mysql> UPDATE college set fees=fees/10 where class='FY';
+Query OK, 2 rows affected (0.084 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select*fees from college;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fees from college' at line 1
+mysql> SELECT fees / 10 AS updated_fees FROM college ^C
+mysql> SELECT fees / 10 AS updated_fees FROM college WHERE class = 'FY';
++--------------+
+| updated_fees |
++--------------+
+|   450.000000 |
+|   470.000000 |
++--------------+
+2 rows in set (0.010 sec)
+
+mysql> select*from college;
++---------+-----------+--------------+-------+----------+
+| roll_no | name      | course       | class | fees     |
++---------+-----------+--------------+-------+----------+
+|     101 | Om        | AIDS         | FY    |  4500.00 |
+|     102 | Manoj     | mechanical   | SY    | 38000.00 |
+|     103 | Karan     | Computer eng | TY    | 42000.00 |
+|     104 | Chaitanya | BBA          | FY    |  4700.00 |
++---------+-----------+--------------+-------+----------+
+4 rows in set (0.007 sec)
+
+mysql> UPDATE college set fees=fees%10 where class='FY';
+Query OK, 2 rows affected (0.073 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql>  SELECT fees % 10 AS updated_fees FROM college WHERE class = 'FY';
++--------------+
+| updated_fees |
++--------------+
+|         0.00 |
+|         0.00 |
++--------------+
+2 rows in set (0.007 sec)
+
+mysql> SELECT fees % 2 AS updated_fees FROM college WHERE class = 'FY';
++--------------+
+| updated_fees |
++--------------+
+|         0.00 |
+|         0.00 |
++--------------+
+2 rows in set (0.006 sec)
+
+mysql> UPDATE college set fees=fees%2 where class='FY';
+Query OK, 0 rows affected (0.008 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
+
+mysql>  SELECT fees % 2 AS updated_fees FROM college WHERE class = 'FY';
++--------------+
+| updated_fees |
++--------------+
+|         0.00 |
+|         0.00 |
++--------------+
+2 rows in set (0.007 sec)
+
+mysql>  UPDATE college set fees=fees%3 where class='FY';
+Query OK, 0 rows affected (0.007 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
+
+mysql> SELECT fees % 3 AS updated_fees FROM college WHERE class = 'FY';
++--------------+
+| updated_fees |
++--------------+
+|         0.00 |
+|         0.00 |
++--------------+
+2 rows in set (0.008 sec)
+
+mysql> SELECT * FROM college;
++---------+-----------+--------------+-------+----------+
+| roll_no | name      | course       | class | fees     |
++---------+-----------+--------------+-------+----------+
+|     101 | Om        | AIDS         | FY    |     0.00 |
+|     102 | Manoj     | mechanical   | SY    | 38000.00 |
+|     103 | Karan     | Computer eng | TY    | 42000.00 |
+|     104 | Chaitanya | BBA          | FY    |     0.00 |
++---------+-----------+--------------+-------+----------+
+4 rows in set (0.009 sec)
+
+mysql> CREATE INDEX Om ON college(name);
+Query OK, 0 rows affected (0.734 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW INDEX FROM college;
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| college |          0 | PRIMARY  |            1 | roll_no     | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| college |          1 | Om       |            1 | name        | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+2 rows in set (0.205 sec)
+
+mysql> CREATE UNIQUE INDEX college_unique_index ON college(name, course);
+Query OK, 0 rows affected (0.466 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW INDEX FROM college;
++---------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table   | Non_unique | Key_name             | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++---------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| college |          0 | PRIMARY              |            1 | roll_no     | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| college |          0 | college_unique_index |            1 | name        | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| college |          0 | college_unique_index |            2 | course      | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| college |          1 | Om                   |            1 | name        | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++---------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+4 rows in set (0.103 sec)
+
+mysql> DROP index Om ON college;
+Query OK, 0 rows affected (0.189 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show index from college;
++---------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table   | Non_unique | Key_name             | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++---------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| college |          0 | PRIMARY              |            1 | roll_no     | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| college |          0 | college_unique_index |            1 | name        | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
+| college |          0 | college_unique_index |            2 | course      | A         |           4 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++---------+------------+----------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+3 rows in set (0.028 sec)
+
+mysql>
