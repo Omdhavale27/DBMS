@@ -1,0 +1,143 @@
+Microsoft Windows [Version 10.0.19045.6159]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 9.4\bin>mysql -h localhost -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 9.4.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
++--------------------+
+6 rows in set (0.065 sec)
+
+mysql> use demo;
+Database changed
+mysql> CREATE TABLE Studentinfo (    student_name VARCHAR(100),    course_code VARCHAR(10),    course_name VARCHAR(100),    grade CHAR(2));
+Query OK, 0 rows affected (0.284 sec)
+
+mysql> desc Studentinfo;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| student_name | varchar(100) | YES  |     | NULL    |       |
+| course_code  | varchar(10)  | YES  |     | NULL    |       |
+| course_name  | varchar(100) | YES  |     | NULL    |       |
+| grade        | char(2)      | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+4 rows in set (0.033 sec)
+
+mysql> CREATE TABLE Students (    student_id INT PRIMARY KEY,    name VARCHAR(100),    major VARCHAR(100),    cgpa DECIMAL(3,2));
+Query OK, 0 rows affected (0.294 sec)
+
+mysql> desc students;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| student_id | int          | NO   | PRI | NULL    |       |
+| name       | varchar(100) | YES  |     | NULL    |       |
+| major      | varchar(100) | YES  |     | NULL    |       |
+| cgpa       | decimal(3,2) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+4 rows in set (0.060 sec)
+
+mysql> INSERT INTO Students (student_id, name, major, cgpa) VALUES
+    -> (1, 'Alice', 'Computer Science', 3.8),
+    -> (2, 'Bob', 'Mathematics', 3.2),
+    -> (3, 'Carol', 'Physics', 3.9),
+    -> (4, 'David', 'Computer Science', 3.5),
+    -> (5, 'Emma', 'Mathematics', 3.7);
+Query OK, 5 rows affected (0.112 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select*from students;
++------------+-------+------------------+------+
+| student_id | name  | major            | cgpa |
++------------+-------+------------------+------+
+|          1 | Alice | Computer Science | 3.80 |
+|          2 | Bob   | Mathematics      | 3.20 |
+|          3 | Carol | Physics          | 3.90 |
+|          4 | David | Computer Science | 3.50 |
+|          5 | Emma  | Mathematics      | 3.70 |
++------------+-------+------------------+------+
+5 rows in set (0.007 sec)
+
+mysql> CREATE TABLE Enrollment (
+    ->     enrollment_id INT PRIMARY KEY,
+    ->     student_id INT,
+    ->     course VARCHAR(100),
+    ->     grade VARCHAR(2),
+    ->     credits INT,
+    ->     FOREIGN KEY (student_id) REFERENCES Students(student_id)
+    -> );
+Query OK, 0 rows affected (1.142 sec)
+
+mysql> desc Enrollment;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| enrollment_id | int          | NO   | PRI | NULL    |       |
+| student_id    | int          | YES  | MUL | NULL    |       |
+| course        | varchar(100) | YES  |     | NULL    |       |
+| grade         | varchar(2)   | YES  |     | NULL    |       |
+| credits       | int          | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.032 sec)
+
+mysql> INSERT INTO Enrollment (enrollment_id, student_id, course, grade, credits) VALUES
+    -> (101, 1, 'Database', 'A', 3),
+    -> (102, 1, 'Programming', 'B+', 4),
+    -> (103, 2, 'Calculus', 'A-', 4),
+    -> (104, 3, 'Quantum Physics', 'A', 3),
+    -> (105, 4, 'Data Structures', 'B', 3),
+    -> (106, 5, 'Statistics', 'A', 3),
+    -> (107, 2, 'Algebra', 'B+', 3);
+Query OK, 7 rows affected (0.137 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select*from enrollment;
++---------------+------------+-----------------+-------+---------+
+| enrollment_id | student_id | course          | grade | credits |
++---------------+------------+-----------------+-------+---------+
+|           101 |          1 | Database        | A     |       3 |
+|           102 |          1 | Programming     | B+    |       4 |
+|           103 |          2 | Calculus        | A-    |       4 |
+|           104 |          3 | Quantum Physics | A     |       3 |
+|           105 |          4 | Data Structures | B     |       3 |
+|           106 |          5 | Statistics      | A     |       3 |
+|           107 |          2 | Algebra         | B+    |       3 |
++---------------+------------+-----------------+-------+---------+
+7 rows in set (0.007 sec)
+Problem 1: Basic Subquery with WHERE
+Find all students who have a CGPA higher than Bob's CGPA.
+mysql> SELECT *from Studentswhere cgpa > (    Select cgpa    from Students    Where name = 'Bob');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '> (    Select cgpa    from Students    Where name = 'Bob')' at line 1
+mysql> select *from students where cgpa>(select cgpa from students where name like'Bob');
++------------+-------+------------------+------+
+| student_id | name  | major            | cgpa |
++------------+-------+------------------+------+
+|          1 | Alice | Computer Science | 3.80 |
+|          3 | Carol | Physics          | 3.90 |
+|          4 | David | Computer Science | 3.50 |
+|          5 | Emma  | Mathematics      | 3.70 |
++------------+-------+------------------+------+
+4 rows in set (0.082 sec)
+
+mysql>
